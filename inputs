@@ -1,0 +1,124 @@
+amrex.fpe_trap_invalid=0
+
+max_step  = 100000
+stop_time = 6.0e-1
+
+geometry.is_periodic = 0 1 1
+geometry.coord_sys   = 0  # 0 => cart, 1 => RZ  2=>spherical
+geometry.prob_lo     =   0.0     0.0     0.0
+geometry.prob_hi     =   1.0    2.5e-4     1.0
+amr.n_cell           =   16000    4      64
+
+# >>>>>>>>>>>>>  BC FLAGS <<<<<<<<<<<<<<<<
+# 0 = Interior           3 = Symmetry
+# 1 = Inflow             4 = SlipWall
+# 2 = Outflow            5 = NoSlipWall
+# >>>>>>>>>>>>>  BC FLAGS <<<<<<<<<<<<<<<<
+cns.lo_bc       =  4   3 # 0
+cns.hi_bc       =  2   3  # 0
+
+cns.cfl = 0.12  # cfl number for hyperbolic system
+
+cns.v = 1
+amr.v = 1
+amr.subcycling_mode = Auto
+cns.do_reflux = 1
+
+# FCT parameters
+cns.minro 			= -1.0e-8
+cns.minp  			= 10132.5
+cns.maxro 			= 15.0
+cns.maxp 			= 9250000.0
+cns.diff1 			= 0.99
+cns.diffcc 			= 0.99
+cns.vfc_threshold 	= 1.e-3
+
+# SOOTFOIL START TIME
+cns.start_sfoil_time	 = 0
+
+
+# LOAD BALANCE
+amr.loadbalance_with_workestimates = 1
+amr.loadbalance_level0_int = 1000
+
+# REFINEMENT / REGRIDDING
+cns.tag_probspecific 		= 1 
+amr.max_level       		= 0    # maximum level number allowed
+cns.refine_max_dengrad_lev 	= 4
+amr.ref_ratio       		= 2 2 2 2 2 2 # refinement ratio
+amr.regrid_int      		= 4 # how often to regrid
+amr.blocking_factor 		= 4
+amr.max_grid_size  		 	= 32000
+amr.n_error_buf     		= 16 # number of buffer cells in error est
+amr.grid_eff        		= 0.99     # what constitutes an efficient grid
+
+# CHECKPOINT FILES
+amr.checkpoint_files_output = 1
+amr.check_file              = Output/chk   # root name of checkpoint file
+amr.check_int               = 10000    # number of timesteps between checkpoints
+#amr.restart					= Output/chk00004000
+
+# PLOTFILES
+amr.plot_files_output = 1
+amr.file_name_digits  = 8
+amr.plot_file         = Output/plt     # root name of plotfile
+amr.plot_int          = 5000     # number of timesteps between plotfiles
+amr.derive_plot_vars  = pressure x_velocity
+
+# EB
+eb2.geom_type = all_regular
+
+cns.refine_cutcells = 0
+
+# eb_algorithm : 1 for FCT, 2 for PLM
+cns.eb_algorithm = 1 
+cns.plm_iorder   = 2
+cns.eb_weights_type = 3
+
+cns.do_visc = false
+
+
+#cns.use_const_visc = false
+#cns.const_visc_mu  = 0.001
+#cns.const_visc_ki  = 0.0
+#cns.const_lambda   = 0.0
+
+# problem specific parameter
+prob.p0  				= 101325.0
+prob.T0  				= 298.0
+prob.xd  				= 6.3e-4
+prob.deltaY 			= 0.5
+prob.deltaT 			= 2000
+prob.deltaP             = 1.5
+prob.overdrive_factor 	= 1.1
+prob.Mobj  				= 0.0
+
+prob.xreflo   				= 0.01
+prob.xrefhi   				= 0.00
+prob.yreflo   				= 0.00
+prob.yrefhi   				= 0.00
+
+prob.Y1						= 1.0
+# PARAMETERS FOR APPENDING FILE (FILE IO)
+prob.append_file = 0
+prob.pressure_file = pressfiles/pressureN16000euler.txt
+
+# REACTION PARAMETERS
+cns.do_react  = true
+# Stoichiometric H2-air reaction parameters
+cns.eos_gamma = 1.125
+cns.eos_mu    = 0.02277
+cns.q_nd      = 62.8
+cns.Ea_nd     = 40.0
+cns.pre_exp   = 1.05e12
+cns.Tref      = 298.0
+cns.pref      = 101325.0
+cns.kappa_0   = 2.0e-5		# UNITS: g / (s-cm-K^(0.7))
+prob.radhitemp			= 5.0e-2
+
+
+prob.refuptolev = 3
+
+prob.write_to_file      = 1
+prob.append_file		= 1
+prob.data_file			= Data.txt
